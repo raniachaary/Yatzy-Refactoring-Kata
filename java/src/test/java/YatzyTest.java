@@ -1,110 +1,157 @@
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-public class YatzyTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    @Test
-    public void chance_scores_sum_of_all_dice() {
-        int expected = 15;
-        int actual = Yatzy.chance(2,3,4,5,1);
-        assertEquals(expected, actual);
-        assertEquals(16, Yatzy.chance(3,3,4,5,1));
+public class YatzyTest extends YatzyDataTest {
+
+    @ParameterizedTest(name = "SHOULD return {1} WHEN chance with {0}")
+    @MethodSource("chanceArgumentsProvider")
+    public void testChance(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.chance(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test public void yatzy_scores_50() {
-        int expected = 50;
-        int actual = Yatzy.yatzy(4,4,4,4,4);
-        assertEquals(expected, actual);
-        assertEquals(50, Yatzy.yatzy(6,6,6,6,6));
-        assertEquals(0, Yatzy.yatzy(6,6,6,6,3));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN yatzy with {0}")
+    @MethodSource("yatzyArgumentsProvider")
+    public void testYatzy(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.yatzy(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test public void test_1s() {
-        assertTrue(Yatzy.ones(1,2,3,4,5) == 1);
-        assertEquals(2, Yatzy.ones(1,2,1,4,5));
-        assertEquals(0, Yatzy.ones(6,2,2,4,5));
-        assertEquals(4, Yatzy.ones(1,2,1,1,1));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN ones with {0}")
+    @MethodSource("onesArgumentsProvider")
+    public void testOnes(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.ones(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void test_2s() {
-        assertEquals(4, Yatzy.twos(1,2,3,2,6));
-        assertEquals(10, Yatzy.twos(2,2,2,2,2));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN twos with {0}")
+    @MethodSource("twosArgumentsProvider")
+    public void testTwos(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.twos(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void test_threes() {
-        assertEquals(6, Yatzy.threes(1,2,3,2,3));
-        assertEquals(12, Yatzy.threes(2,3,3,3,3));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN threes with {0}")
+    @MethodSource("threesArgumentsProvider")
+    public void testThrees(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.threes(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void fours_test() 
-    {
-        assertEquals(12, new Yatzy(4,4,4,5,5).fours());
-        assertEquals(8, new Yatzy(4,4,5,5,5).fours());
-        assertEquals(4, new Yatzy(4,5,5,5,5).fours());
+    @ParameterizedTest(name = "SHOULD return {1} WHEN fours with {0}")
+    @MethodSource("foursArgumentsProvider")
+    public void testFours(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.fours(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void fives() {
-        assertEquals(10, new Yatzy(4,4,4,5,5).fives());
-        assertEquals(15, new Yatzy(4,4,5,5,5).fives());
-        assertEquals(20, new Yatzy(4,5,5,5,5).fives());
+    @ParameterizedTest(name = "SHOULD return {1} WHEN fives with {0}")
+    @MethodSource("fivesArgumentsProvider")
+    public void testFives(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.fives(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void sixes_test() {
-        assertEquals(0, new Yatzy(4,4,4,5,5).sixes());
-        assertEquals(6, new Yatzy(4,4,6,5,5).sixes());
-        assertEquals(18, new Yatzy(6,5,6,6,5).sixes());
+    @ParameterizedTest(name = "SHOULD return {1} WHEN sixes with {0}")
+    @MethodSource("sixesArgumentsProvider")
+    public void testSixes(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.sixes(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void one_pair() {
-        assertEquals(6, Yatzy.score_pair(3,4,3,5,6));
-        assertEquals(10, Yatzy.score_pair(5,3,3,3,5));
-        assertEquals(12, Yatzy.score_pair(5,3,6,6,5));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN pair with {0}")
+    @MethodSource("pairArgumentsProvider")
+    public void testPair(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.pair(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void two_Pair() {
-        assertEquals(16, Yatzy.two_pair(3,3,5,4,5));
-        assertEquals(16, Yatzy.two_pair(3,3,5,5,5));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN twoPairs with {0}")
+    @MethodSource("twoPairsArgumentsProvider")
+    public void testTwoPairs(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.twoPairs(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void three_of_a_kind() 
-    {
-        assertEquals(9, Yatzy.three_of_a_kind(3,3,3,4,5));
-        assertEquals(15, Yatzy.three_of_a_kind(5,3,5,4,5));
-        assertEquals(9, Yatzy.three_of_a_kind(3,3,3,3,5));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN threeOfAKind with {0}")
+    @MethodSource("threeOfAKindArgumentsProvider")
+    public void testThreeOfAKind(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.threeOfAKind(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void four_of_a_knd() {
-        assertEquals(12, Yatzy.four_of_a_kind(3,3,3,3,5));
-        assertEquals(20, Yatzy.four_of_a_kind(5,5,5,4,5));
-        assertEquals(9, Yatzy.three_of_a_kind(3,3,3,3,3));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN fourOfAKind with {0}")
+    @MethodSource("fourOfAKindArgumentsProvider")
+    public void testFourOfAKind(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.fourOfAKind(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void smallStraight() {
-        assertEquals(15, Yatzy.smallStraight(1,2,3,4,5));
-        assertEquals(15, Yatzy.smallStraight(2,3,4,5,1));
-        assertEquals(0, Yatzy.smallStraight(1,2,2,4,5));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN smallStraight with {0}")
+    @MethodSource("smallStraightArgumentsProvider")
+    public void testSmallStraight(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.smallStraight(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void largeStraight() {
-        assertEquals(20, Yatzy.largeStraight(6,2,3,4,5));
-        assertEquals(20, Yatzy.largeStraight(2,3,4,5,6));
-        assertEquals(0, Yatzy.largeStraight(1,2,2,4,5));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN largeStraight with {0}")
+    @MethodSource("largeStraightArgumentsProvider")
+    public void testLargeStraight(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.largeStraight(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 
-    @Test
-    public void fullHouse() {
-        assertEquals(18, Yatzy.fullHouse(6,2,2,2,6));
-        assertEquals(0, Yatzy.fullHouse(2,3,4,5,6));
+    @ParameterizedTest(name = "SHOULD return {1} WHEN fullHouse with {0}")
+    @MethodSource("fullHouseArgumentsProvider")
+    public void testFullHouse(final DiceRoll diceRoll, final int expected) {
+        // GIVEN // WHEN
+        var result = Yatzy.fullHouse(diceRoll);
+
+        // THEN
+        assertEquals(expected, result);
     }
 }
